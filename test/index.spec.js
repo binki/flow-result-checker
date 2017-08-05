@@ -12,12 +12,18 @@ describe('main tool', () => {
   })
 
   it('should find no errors in `index.js`', () => {
-    const expected = `Found 0 errors
+    const expectedStdout = `Found 0 errors
 `
+    const expectedStderr = ``
 
-    const { stdout } = spawnSync('flow', ['check'], { encoding: 'utf8' })
+    const { status, stdout, stderr } = spawnSync('flow', ['check'], { encoding: 'utf8' })
 
-    expect(normalizeString(stdout)).toEqual(normalizeString(expected))
+    // For debugging CI when test fails.
+    console.log({ status, stdout, stderr })
+
+    expect(status).toEqual(0)
+    expect(normalizeString(stdout)).toEqual(normalizeString(expectedStdout))
+    expect(normalizeString(stderr)).toEqual(normalizeString(expectedStderr))
   })
 
   describe('examples', () => {
